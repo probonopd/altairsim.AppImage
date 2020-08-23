@@ -40,7 +40,7 @@ jobs:
         rm -rf ./appdir/usr/bin/srcsim # Source is not needed there
         mv ./appdir/usr/bin/conf ./appdir/usr/bin/disks ./appdir/usr/share/altairsim
         find ./appdir
-        find ./appdir -type f -exec sed -i -e 's|/usr/local|./././././|g {} \;
+        find ./appdir -type f -exec sed -i -e 's|/usr/local|./././././|g' {} \;
         
     - name: Generate AppImage
       run: |
