@@ -4,4 +4,7 @@ Emulation of an Altair 8800 system with 8080 or Z80 CPU, 64KB RAM, Cromemco Dazz
  
 ![](349-3492692_mic-torino-altair8800-8-bit-mikrocomputer-bausatz-mits.png)
 
-https://www.autometer.de/unix4fun/z80pack/
+## References
+
+* https://www.autometer.de/unix4fun/z80pack/
+* https://github.com/udo-munk/z80pack
