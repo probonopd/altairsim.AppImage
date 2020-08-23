@@ -33,8 +33,10 @@ jobs:
         
     - name: Put together AppDir
       run: | 
+        ls -lh
         mkdir -p ../appdir/usr/share/icons/256x256/apps
         cp -r ./* ../appdir/
+        ls -lh ../appdir/
         convert ../../349-3492692_mic-torino-altair8800-8-bit-mikrocomputer-bausatz-mits.png  -resize 256x256 -gravity center -background none -extent 256x256 ../appdir/usr/share/icons/256x256/apps/altairsim.png
         cd ..    
     - name: Generate AppImage
