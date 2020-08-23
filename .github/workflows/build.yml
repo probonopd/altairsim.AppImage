@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
 
     steps:
     
@@ -47,7 +47,7 @@ jobs:
         APPDIR=$(readlink -f appdir) # Why is this needed?
         wget -c -q https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases -O - | grep "appimagetool-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
         chmod +x appimagetool-*.AppImage
-        ./appimagetool-*.AppImage -s deploy "$APPDIR"/usr/share/applications/*.desktop --appimage-extract-and-run # Bundle EVERYTHING
+        ./appimagetool-*.AppImage deploy "$APPDIR"/usr/share/applications/*.desktop --appimage-extract-and-run # Bundle EVERYTHING
         ./appimagetool-*.AppImage "$APPDIR" --appimage-extract-and-run # turn AppDir into AppImage
 
     - name: Release AppImage
