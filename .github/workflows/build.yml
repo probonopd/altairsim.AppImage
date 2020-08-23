@@ -56,5 +56,5 @@ jobs:
         prerelease: true
         draft: false
         files: |
-          cpmsim*.AppImage*
+          altairsim*.AppImage*
         repo_token: ${{ secrets.GITHUB_TOKEN }}
