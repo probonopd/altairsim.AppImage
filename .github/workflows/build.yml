@@ -33,7 +33,8 @@ jobs:
         
     - name: Put together AppDir
       run: | 
-        mkdir -p ./appdir/usr/bin ./appdir/usr/share/icons/256x256/apps
+        mkdir -p ./appdir/usr/bin ./appdir/usr/share/icons/256x256/apps ./appdir/usr/share/applications
+        cp altairsim.desktop  ./appdir/usr/share/applications/
         cp -r ./z80pack-1.36/altairsim/* ./appdir/usr/bin
         convert 349-3492692_mic-torino-altair8800-8-bit-mikrocomputer-bausatz-mits.png  -resize 256x256 -gravity center -background none -extent 256x256 ./appdir/usr/share/icons/256x256/apps/altairsim.png
         find ./appdir
