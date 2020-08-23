@@ -6,6 +6,13 @@ Emulation of an Altair 8800 system with 8080 or Z80 CPU, 64KB RAM, Cromemco Dazz
 
 [![Download as an AppImage](https://raw.githubusercontent.com/KhushrajRathod/KhushrajRathod/master/download-appimage.svg)](https://github.com/probonopd/altairsim.AppImage/releases/tag/continuous)
 
+## Getting started
+
+* [Altair 8800 - Video #1 - Front Panel Introduction](https://www.youtube.com/watch?v=suyiMfzmZKs)
+* [Altair 8800 - Video #2 - Front Panel Programming](https://www.youtube.com/watch?v=EV1ki6LiEmg) shows how to enter, inspect, and run machine code using the front panel switches and LEDs 
+* [Altair 8800 - Video #3 - Kill the Bit Game](https://www.youtube.com/watch?v=ZKeiQ8e18QY)
+
+* [Altair 8800 manual](http://www.classiccmp.org/dunfield/altair/d/88opman.pdf)
 
 ## References
 
