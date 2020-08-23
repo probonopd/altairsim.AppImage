@@ -1,0 +1,60 @@
+name: "CI"
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - uses: actions/checkout@v1
+    
+    - name: Install Dependencies and get source code
+      run: |
+        apt update
+        apt install -y gcc libncurses5-dev liblua5.3-dev git make zip unzip libjpeg-dev x11-common libpthread-stubs0-dev libxmu-dev mesa-common-dev z80asm libglu1-mesa-dev freeglut3-dev 
+        wget https://www.autometer.de/unix4fun/z80pack/ftp/z80pack-1.36.tgz
+        tar -xvf z80pack-1.36.tgz
+        
+    - name: Build
+      run: |
+        cd z80pack-1.36/
+        cd frontpanel/
+        make -f Makefile.linux
+        sudo cp libfrontpanel.so /usr/lib/x86_64-linux-gnu/
+        cd ../cpmsim/srcsim/
+        make -f Makefile.linux
+        cd ../../altairsim/srcsim/
+        make -f Makefile.linux
+        cd ..
+        ls -lh
+          
+    - name: Generate AppImage
+      run: |
+        APPDIR=$(readlink -f appdir) # Why is this needed?
+        wget -c -q https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases -O - | grep "appimagetool-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
+        chmod +x appimagetool-*.AppImage
+        mkdir -p "$APPDIR"/usr/share/icons/hicolor/256x256/apps/
+        rsvg-convert -w 256 -h 256 "$APPDIR"/usr/share/icons/hicolor/scalable/apps/com.github.akiraux.akira.svg > "$APPDIR"/usr/share/icons/hicolor/256x256/apps/com.github.akiraux.akira.png
+        mkdir -p "$APPDIR"/usr/share/glib-2.0/schemas/ ; cp /usr/share/glib-2.0/schemas/org.gtk.Settings.*.xml "$APPDIR"/usr/share/glib-2.0/schemas/
+        find "$APPDIR"
+        ./appimagetool-*.AppImage -s deploy "$APPDIR"/usr/share/applications/*.desktop --appimage-extract-and-run # Bundle EVERYTHING
+        sed -i -e 's|/usr||g' "$APPDIR"/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache # FIXME in https://github.com/probonopd/go-appimage
+        ( cd "$APPDIR"/usr/share/mime/ ; ln -s /usr/share/mime/mime.cache . ) # FIXME in https://github.com/probonopd/go-appimage; https://github.com/probonopd/go-appimage/issues/58#issuecomment-675010671
+        mkdir -p "$APPDIR"/usr/share/icons ; cp -r /usr/share/icons/elementary "$APPDIR"/usr/share/icons/ # https://github.com/akiraux/Akira/issues/3#issuecomment-674544807 and https://github.com/probonopd/go-appimage/blob/c522796229a3669afdf8b4870b045b597332c5a2/src/appimagetool/appdirtool.go#L715-L722
+        mkdir -p "$APPDIR"/usr/share/themes ; cp -r /usr/share/themes/elementary "$APPDIR"/usr/share/themes/ # https://github.com/akiraux/Akira/issues/3#issuecomment-674544807
+        rm -rf "$APPDIR"/usr/share/themes/Default ; sed -i -e 's|Default|elementary|g' "$APPDIR"/AppRun # Use the elementary theme rather than the Gtk Default theme
+        ./appimagetool-*.AppImage "$APPDIR" --appimage-extract-and-run # turn AppDir into AppImage
+
+    - name: Release AppImage
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        title: AppImage
+        automatic_release_tag: continuous
+        prerelease: true
+        draft: false
+        files: |
+          cpmsim*.AppImage*
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
