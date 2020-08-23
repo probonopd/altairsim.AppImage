@@ -14,7 +14,7 @@ jobs:
     - name: Install Dependencies and get source code
       run: |
         sudo apt-get update
-        sudo apt-get -y install gcc libncurses5-dev liblua5.3-dev git make zip unzip libjpeg-dev x11-common libpthread-stubs0-dev libxmu-dev mesa-common-dev z80asm libglu1-mesa-dev freeglut3-dev 
+        sudo apt-get -y install imagemagick gcc libncurses5-dev liblua5.3-dev git make zip unzip libjpeg-dev x11-common libpthread-stubs0-dev libxmu-dev mesa-common-dev z80asm libglu1-mesa-dev freeglut3-dev 
         wget https://www.autometer.de/unix4fun/z80pack/ftp/z80pack-1.36.tgz
         tar -xvf z80pack-1.36.tgz
         
@@ -30,7 +30,13 @@ jobs:
         make -f Makefile.linux
         cd ..
         ls -lh
-          
+        
+    - name: Put together AppDir
+      run: | 
+        mkdir -p ../appdir/usr/share/icons/256x256/apps
+        cp -r ./* ../appdir/
+        convert ../../349-3492692_mic-torino-altair8800-8-bit-mikrocomputer-bausatz-mits.png  -resize 256x256 -gravity center -background none -extent 256x256 ../appdir/usr/share/icons/256x256/apps/altairsim.png
+        cd ..    
     - name: Generate AppImage
       run: |
         APPDIR=$(readlink -f appdir) # Why is this needed?
