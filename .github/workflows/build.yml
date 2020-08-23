@@ -13,8 +13,8 @@ jobs:
     
     - name: Install Dependencies and get source code
       run: |
-        apt update
-        apt install -y gcc libncurses5-dev liblua5.3-dev git make zip unzip libjpeg-dev x11-common libpthread-stubs0-dev libxmu-dev mesa-common-dev z80asm libglu1-mesa-dev freeglut3-dev 
+        sudo apt-get update
+        sudo apt-get -y install gcc libncurses5-dev liblua5.3-dev git make zip unzip libjpeg-dev x11-common libpthread-stubs0-dev libxmu-dev mesa-common-dev z80asm libglu1-mesa-dev freeglut3-dev 
         wget https://www.autometer.de/unix4fun/z80pack/ftp/z80pack-1.36.tgz
         tar -xvf z80pack-1.36.tgz
         
