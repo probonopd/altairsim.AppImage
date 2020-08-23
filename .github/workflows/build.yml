@@ -33,13 +33,14 @@ jobs:
         
     - name: Put together AppDir
       run: | 
-        mkdir -p ./appdir/usr/bin ./appdir/usr/share/icons/hicolor/256x256/apps ./appdir/usr/share/applications
+        mkdir -p ./appdir/usr/bin ./appdir/usr/share/icons/hicolor/256x256/apps ./appdir/usr/share/applications ./appdir/usr/share/altairsim
         cp altairsim.desktop  ./appdir/usr/share/applications/
         cp -r ./z80pack-1.36/altairsim/* ./appdir/usr/bin
         convert 349-3492692_mic-torino-altair8800-8-bit-mikrocomputer-bausatz-mits.png  -resize 256x256 -gravity center -background none -extent 256x256 ./appdir/usr/share/icons/hicolor/256x256/apps/altairsim.png
         rm -rf ./appdir/usr/bin/srcsim # Source is not needed there
+        mv ./appdir/usr/bin/conf ./appdir/usr/bin/disks ./appdir/usr/share/altairsim
         find ./appdir
-        find ./appdir -type f -exec sed -i -e 's|/usr|././|g {} \;
+        find ./appdir -type f -exec sed -i -e 's|/usr/local|./././././|g {} \;
         
     - name: Generate AppImage
       run: |
